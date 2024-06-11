@@ -1,7 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Put, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { last } from 'rxjs';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import { APP_GUARD } from '@nestjs/core';
+import { TokenExpiredError } from '@nestjs/jwt';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 
 @Controller('users')
@@ -31,6 +36,33 @@ export class UsersController {
     return this.usersService.Perfil(email);
     
   }
+
   
+  @Put('change-password')
+  async changePassword(
+    @Body() changePasswordDto: ChangePasswordDto,
+    @Req() req){
+    return this.usersService.changePassword(
+      req.oid,
+      changePasswordDto.oldPassword, 
+      changePasswordDto.newPassword,
+    );
+  }
+
+  @Post('forgot-password')
+  async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto){
+    return this.usersService.forgotPassword(forgotPasswordDto.email);
+  }
+
+  @Put('reset-password')
+  async resetPassword(
+    @Body() resetPasswordDto: ResetPasswordDto){
+
+    return this.usersService.resetPassword(
+      resetPasswordDto.newPassword, 
+      resetPasswordDto.resetToken,
+
+    );
+  } 
   
 }
