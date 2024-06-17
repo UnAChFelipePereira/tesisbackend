@@ -1,12 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Put, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Put, UseGuards, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { last } from 'rxjs';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { APP_GUARD } from '@nestjs/core';
-import { TokenExpiredError } from '@nestjs/jwt';
+import { JwtModule, JwtService, TokenExpiredError } from '@nestjs/jwt';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { User } from './entities/user.entity';
+import { AuthGuard } from '@nestjs/passport';
 
 
 @Controller('users')
@@ -65,4 +68,18 @@ export class UsersController {
     );
   } 
   
+
+  @Post('upload-profile-picture')
+  @UseInterceptors(FileInterceptor('profilePic'))
+  @UseGuards(JwtService)
+  async uploadProfilePic(
+    @UploadedFile() file, 
+    @Req() req) {
+return this.usersService.updateProfilePic(
+req.oid,
+req.profilePic,
+)
+}
+
+
 }

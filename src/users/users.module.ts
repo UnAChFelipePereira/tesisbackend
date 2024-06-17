@@ -8,6 +8,7 @@ import { MailService } from 'src/services/mail.service';
 import { ResetToken, ResetTokenSchema } from './reset-token.schema';
 
 
+
 @Module({
   
   imports:[MongooseModule.forFeature([{name: User.name, schema: UserSchema},{name: ResetToken.name, schema: ResetTokenSchema}])],

@@ -155,6 +155,7 @@ return{
 }
 }
 
+
 async resetPassword(newPassword: string, resetToken: string){
 
   const token = await this.ResetTokenModel.findOne({
@@ -203,6 +204,10 @@ async forgotPassword(email: string) {
   return { message: 'Se ha enviado un correo a la siguiente dirección: ' + email };
 }
 
+
+async updateProfilePic(oid, profilePicPath: string): Promise<void> {
+  await this.userModel.findByIdAndUpdate(oid, { profilePic: profilePicPath });
+}
 
 
 

@@ -21,15 +21,8 @@ export class User {
     @Prop({type:'oid', unique: true, name: 'reset_password_token', nullable: true})
     resetPasswordToken: string;
 
-    // @Prop({required: true})
-    // token: string;
-
-    // @Prop({required: true, type: mongoose.Types.ObjectId})
-    // userId: string;
-
-    // @Prop({required: true})
-    // expiryDate: Date;
-
+    @Prop()
+    profilePic: string;
 
 
 }
